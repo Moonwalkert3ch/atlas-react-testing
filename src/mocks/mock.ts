@@ -6,13 +6,15 @@ export const handlers = [
       return HttpResponse.json([
        {
          id: 1,
-         title: "Lorem Ipsum",
-         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+         title: "MoonWalker Music",
+         artist: "chris brown",
+         duration: "4:44"
        },
        {
          id: 2,
-         title: "Lorem Ipsum",
-         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+         title: "The Bradford Hour",
+         artist: "jaheem",
+         duration: "11:11"
        }
       ]);
     }
