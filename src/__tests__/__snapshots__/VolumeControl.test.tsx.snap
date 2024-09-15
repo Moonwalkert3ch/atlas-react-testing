@@ -1,0 +1,52 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`VolumeControl renders correctly 1`] = `
+<div>
+  <div
+    class="flex items-center p-2 w-full"
+  >
+    <svg
+      aria-hidden="true"
+      class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium mr-2 text-black css-20bmp1-MuiSvgIcon-root"
+      data-testid="VolumeUpIcon"
+      focusable="false"
+      viewBox="0 0 24 24"
+    >
+      <path
+        d="M3 9v6h4l5 5V4L7 9zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77"
+      />
+    </svg>
+    <span
+      class="MuiSlider-root MuiSlider-colorPrimary MuiSlider-sizeMedium css-1vye5u-MuiSlider-root"
+    >
+      <span
+        class="MuiSlider-rail css-7o8aqz-MuiSlider-rail"
+      />
+      <span
+        class="MuiSlider-track css-ttgsjq-MuiSlider-track"
+        style="left: 0%; width: 50%;"
+      />
+      <span
+        class="MuiSlider-thumb MuiSlider-thumbSizeMedium MuiSlider-thumbColorPrimary MuiSlider-thumb MuiSlider-thumbSizeMedium MuiSlider-thumbColorPrimary css-cp2j25-MuiSlider-thumb"
+        data-index="0"
+        style="left: 50%;"
+      >
+        <input
+          aria-labelledby="volume-slider"
+          aria-orientation="horizontal"
+          aria-valuemax="100"
+          aria-valuemin="0"
+          aria-valuenow="50"
+          data-index="0"
+          max="100"
+          min="0"
+          step="1"
+          style="border: 0px; height: 100%; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 100%; direction: ltr;"
+          type="range"
+          value="50"
+        />
+      </span>
+    </span>
+  </div>
+</div>
+`;
