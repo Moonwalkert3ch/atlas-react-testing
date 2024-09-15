@@ -1,0 +1,43 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Cover image renders correctly 1`] = `
+<div>
+  <div
+    class="flex flex-col"
+  >
+    <img
+      alt="Cover Art"
+      class="w-96 h-96 object-cover"
+      src="https://example.com/cover1.jpg"
+    />
+  </div>
+</div>
+`;
+
+exports[`cover image changes with songs renders correctly 1`] = `
+<div>
+  <div
+    class="flex flex-col"
+  >
+    <img
+      alt="Cover Art"
+      class="w-96 h-96 object-cover"
+      src="https://example.com/cover2.jpg"
+    />
+  </div>
+</div>
+`;
+
+exports[`no cover renders correctly 1`] = `
+<div>
+  <div
+    class="flex flex-col"
+  >
+    <img
+      alt="Cover Art"
+      class="w-96 h-96 object-cover"
+      src=""
+    />
+  </div>
+</div>
+`;
