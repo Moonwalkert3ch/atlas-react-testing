@@ -54,7 +54,7 @@ const createMockResponse = (data: PlaylistItem[] | null, status: number = 200): 
 };
 
 describe('MusicPlayer Component', () => {
-  test('should fetch and display playlist', async () => {
+  test('data fetched and rendered', async () => {
     // Mock successful fetch response
     mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
 
@@ -67,7 +67,7 @@ describe('MusicPlayer Component', () => {
     });
   });
 
-  test('should display the second song as currently playing by default', async () => {
+  test('display second song as defualt renders', async () => {
     mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
 
     render(<MusicPlayer />);
@@ -78,7 +78,7 @@ describe('MusicPlayer Component', () => {
     });
   });
 
-  test('should change currently playing song when a new song is selected', async () => {
+  test('changes song with selection renders', async () => {
     mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
 
     render(<MusicPlayer />);
@@ -95,7 +95,7 @@ describe('MusicPlayer Component', () => {
     expect(screen.getByText('Currently Playing: Test MoonWalker Music')).toBeInTheDocument();
   });
 
-  test('should render the full playlist with song titles', async () => {
+  test('renders playlist with song titles', async () => {
     mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
 
     render(<MusicPlayer />);
@@ -107,7 +107,7 @@ describe('MusicPlayer Component', () => {
     });
   });
 
-  test('should handle fetch error gracefully', async () => {
+  test('fetch error rendered', async () => {
     // Mock failed fetch response
     mockFetch.mockResolvedValueOnce(createMockResponse([], 500));
 
