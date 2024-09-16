@@ -1,5 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { describe, test, expect, vi } from 'vitest';
+import '@testing-library/jest-dom';
 import MusicPlayer from '../MusicPlayer';
 
 interface PlaylistItem {
@@ -108,7 +109,7 @@ describe('MusicPlayer Component', () => {
 
   test('should handle fetch error gracefully', async () => {
     // Mock failed fetch response
-    mockFetch.mockResolvedValueOnce(createMockResponse(null, 500));
+    mockFetch.mockResolvedValueOnce(createMockResponse([], 500));
 
     render(<MusicPlayer />);
 
