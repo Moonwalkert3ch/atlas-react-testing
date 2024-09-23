@@ -42,6 +42,7 @@ export function PlayControls({
       <button 
       className="inline-flex h-10 w-10 items-center justify-center whitespace-nowrap rounded-md text-sm leading-5 font-medium transition-transform duration-200 ease-in-out transform hover:scale-105 outline outline-1.5 outline-custom-text focus:outline" 
       onClick={onPlayToggle}
+      aria-label={isPlaying ? "Pause music" : "Play music"}
       >
         { isPlaying ? (
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 text-custom-text">

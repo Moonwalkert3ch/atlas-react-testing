@@ -1,121 +1,96 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { describe, test, expect, vi } from 'vitest';
-import '@testing-library/jest-dom';
-import MusicPlayer from '../MusicPlayer';
+import { expect, describe, test, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { VolumeControl } from "../components/VolumeControls"; 
+import { PlayControls } from "../components/PlayControls";
+import { CurrentlyPlaying } from "../components/CurrentlyPlaying";
+import "@testing-library/jest-dom/vitest";
 
-interface PlaylistItem {
-  id: number;
-  title: string;
-  artist: string;
-  duration: string;
-  cover: string;
-}
+describe("VolumeControl", () => {
+  test("renders volume control slider", () => {
+    render(<VolumeControl />);
+    
+    // Check if the VolumeUpIcon is in the document
+    expect(screen.getByRole("slider")).toBeInTheDocument();
+  });
+});
 
-// Mock fetch API
-const mockFetch = vi.spyOn(global, 'fetch');
+describe('PlayControls Component', () => {
+  // Mock functions for props
+  const onPrev = vi.fn();
+  const onNext = vi.fn();
+  const onShuffleToggle = vi.fn();
+  const onPlayToggle = vi.fn();
 
-// Mock data for the playlist
-const mockPlaylist: PlaylistItem[] = [
-  {
+  test('speed button changes on click', () => {
+    render(
+      <PlayControls
+        onPrev={onPrev}
+        onNext={onNext}
+        isFirstSong={false}
+        isLastSong={false}
+        onShuffleToggle={onShuffleToggle}
+        isShuffle={false}
+        isPlaying={false}
+        onPlayToggle={onPlayToggle}
+      />
+    );
+
+    // Initially speed should be 1x
+    expect(screen.getByText('1x')).toBeInTheDocument();
+
+    // Click the speed button
+    fireEvent.click(screen.getByText('1x'));
+
+    // Now speed should be 2x
+    expect(screen.getByText('2x')).toBeInTheDocument();
+
+    // Click again to change speed to 3x
+    fireEvent.click(screen.getByText('2x'));
+
+    // Now speed should be 3x
+    expect(screen.getByText('3x')).toBeInTheDocument();
+
+    // Click again to reset speed to 1x
+    fireEvent.click(screen.getByText('3x'));
+
+    // Speed should reset to 1x
+    expect(screen.getByText('1x')).toBeInTheDocument();
+  });
+
+  test('play button is rendered', () => {
+    const playButton = screen.queryByRole('button', { name: /play/i });
+    expect(playButton).toBeInTheDocument();
+});
+
+});
+
+test('renders currently playing song', () => {
+  const song = {
     id: 1,
-    title: 'Test MoonWalker Music',
-    artist: 'Test Artist 1',
-    duration: '11:11',
-    cover: 'https://example.com/cover1.jpg',
-  },
-  {
-    id: 2,
-    title: 'Test Bradford Hour',
-    artist: 'Test Artist 2',
-    duration: '4:15',
-    cover: 'https://example.com/cover2.jpg',
-  },
-];
+    title: 'Test Song',
+    artist: 'Test Artist',
+    genre: 'Test Genre',
+    duration: '3:45',
+    cover: 'test-cover.jpg',
+  };
 
-// Helper function to create a mock Response object
-const createMockResponse = (data: PlaylistItem[] | null, status: number = 200): Response => {
-  return {
-    ok: status >= 200 && status < 300,
-    status,
-    statusText: status === 200 ? 'OK' : 'Error',
-    json: async () => data,
-    headers: new Headers(),
-    redirected: false,
-    type: 'basic' as ResponseType, // Ensure it's of type ResponseType
-    url: '',
-    clone: () => createMockResponse(data, status), // Required for Response interface
-    body: null,
-    bodyUsed: false,
-    text: async () => JSON.stringify(data),
-    arrayBuffer: async () => new ArrayBuffer(0),
-    blob: async () => new Blob(),
-    formData: async () => new FormData(),
-  } as Response;
-};
+  const playlist = [song];
 
-describe('MusicPlayer Component', () => {
-  test('data fetched and rendered', async () => {
-    // Mock successful fetch response
-    mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
+  render(<CurrentlyPlaying song={song} playlist={playlist} />);
 
-    render(<MusicPlayer />);
+  // Check if cover art is rendered
+  const coverArt = screen.getByRole('img'); // Assuming CoverArt component has an img element
+  expect(coverArt).toBeInTheDocument();
+  expect(coverArt).toHaveAttribute('src', song.cover);
 
-    // Verify that playlist songs are rendered after fetching
-    await waitFor(() => {
-      expect(screen.getByText('Test MoonWalker Music')).toBeInTheDocument();
-      expect(screen.getByText('Test Bradford Hour')).toBeInTheDocument();
-    });
-  });
+  // Check if song title and artist are rendered
+  expect(screen.getByText(song.title)).toBeInTheDocument();
+  expect(screen.getByText(song.artist)).toBeInTheDocument();
+});
 
-  test('display second song as defualt renders', async () => {
-    mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
+test('renders message when no song is playing', () => {
+  render(<CurrentlyPlaying song={null} playlist={[]} />);
 
-    render(<MusicPlayer />);
-
-    // Wait for the playlist to be loaded
-    await waitFor(() => {
-      expect(screen.getByText('Currently Playing: Test Bradford Hour')).toBeInTheDocument();
-    });
-  });
-
-  test('changes song with selection renders', async () => {
-    mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
-
-    render(<MusicPlayer />);
-
-    // Wait for the playlist to be loaded
-    await waitFor(() => {
-      expect(screen.getByText('Test MoonWalker Music')).toBeInTheDocument();
-    });
-
-    // Simulate selecting the first song in the playlist
-    fireEvent.click(screen.getByText('Test MoonWalker Music'));
-
-    // Verify that the currently playing song is updated
-    expect(screen.getByText('Currently Playing: Test MoonWalker Music')).toBeInTheDocument();
-  });
-
-  test('renders playlist with song titles', async () => {
-    mockFetch.mockResolvedValueOnce(createMockResponse(mockPlaylist));
-
-    render(<MusicPlayer />);
-
-    // Check if all songs in the playlist are rendered
-    await waitFor(() => {
-      expect(screen.getByText('Test MoonWalker Music')).toBeInTheDocument();
-      expect(screen.getByText('Test Bradford Hour')).toBeInTheDocument();
-    });
-  });
-
-  test('fetch error rendered', async () => {
-    // Mock failed fetch response
-    mockFetch.mockResolvedValueOnce(createMockResponse([], 500));
-
-    render(<MusicPlayer />);
-
-    // Wait for the error handling to be executed
-    await waitFor(() => {
-      expect(screen.getByText('Error fetching playlist:')).toBeInTheDocument();
-    });
-  });
+  // Check if the no song message is rendered
+  expect(screen.getByText('No song is playing')).toBeInTheDocument();
 });
